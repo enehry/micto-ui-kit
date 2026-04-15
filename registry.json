@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "inertia-pagination",
-  "homepage": "http://localhost:3000",
+  "homepage": "https://micto-ui-kit.misangono.net",
   "items": [
     {
       "name": "inertia-pagination",

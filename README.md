@@ -21,8 +21,8 @@ pnpm registry:build
 ## Install From Registry
 
 ```bash
-pnpm dlx shadcn@latest add http://localhost:3000/r/inertia-pagination.json
-npx shadcn@latest add http://localhost:3000/r/inertia-pagination.json
+pnpm dlx shadcn@latest add https://micto-ui-kit.misangono.net/r/inertia-pagination.json
+npx shadcn@latest add https://micto-ui-kit.misangono.net/r/inertia-pagination.json
 ```
 
 ## Usage
