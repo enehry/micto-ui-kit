@@ -9,8 +9,16 @@ const demoLinks = [
   { active: false, label: "2", url: "/users?page=2" },
   { active: true, label: "3", url: "/users?page=3" },
   { active: false, label: "4", url: "/users?page=4" },
+  { active: false, label: "5", url: "/users?page=5" },
+  { active: false, label: "6", url: "/users?page=6" },
+  { active: false, label: "7", url: "/users?page=7" },
+  { active: false, label: "8", url: "/users?page=8" },
+  { active: false, label: "9", url: "/users?page=9" },
+  { active: false, label: "10", url: "/users?page=10" },
   { active: false, label: "...", url: null },
   { active: false, label: "12", url: "/users?page=12" },
+  { active: false, label: "13", url: "/users?page=13" },
+  { active: false, label: "14", url: "/users?page=14" },
   { active: false, label: "Next &raquo;", url: "/users?page=4" },
 ];
 

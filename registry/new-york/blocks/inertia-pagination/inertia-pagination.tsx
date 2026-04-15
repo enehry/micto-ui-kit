@@ -27,6 +27,7 @@ type InertiaLikeLinkProps = {
 type Props = {
   links: PaginationLinkData[];
   size?: "default" | "sm" | "lg" | "icon" | null | undefined;
+  position?: "start" | "center" | "end";
   className?: string;
   LinkComponent?: React.ComponentType<InertiaLikeLinkProps>;
 };
@@ -34,17 +35,23 @@ type Props = {
 export function InertiaPagination({
   links,
   size = "icon",
+  position = "center",
   className,
   LinkComponent,
 }: Props) {
   const cleanLabel = (label: string) =>
     label.replace(/&laquo;|&raquo;/g, "").trim();
+  const positionClass = {
+    start: "justify-start",
+    center: "justify-center",
+    end: "justify-end",
+  }[position];
 
   if (!links || links.length <= 1) return null;
 
   return (
-    <Pagination className={className}>
-      <PaginationContent>
+    <Pagination className={cn(positionClass, className)}>
+      <PaginationContent className={cn("flex-wrap", positionClass)}>
         {links.map((link, index) => {
           const isPrev = link.label.includes("Previous");
           const isNext = link.label.includes("Next");
