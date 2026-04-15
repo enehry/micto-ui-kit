@@ -1,23 +1,35 @@
-# registry-template
+# Inertia Pagination Registry
 
-You can use the `shadcn` CLI to run your own component registry. Running your own
-component registry allows you to distribute your custom components, hooks, pages, and
-other files to any React project.
+This repository is a focused `shadcn` registry for a single component:
+`inertia-pagination`.
 
-> [!IMPORTANT]  
-> This template uses Tailwind v4. For Tailwind v3, see [registry-template-v3](https://github.com/shadcn-ui/registry-template-v3).
+## Included
 
-## Getting Started
+- `InertiaPagination` for Laravel and Inertia paginator link arrays.
+- Minimal shadcn-style button and pagination primitives used by the component.
+- A small preview page for local development.
 
-This is a template for creating a custom registry using Next.js.
+## Commands
 
-- The template uses a `registry.json` file to define components and their files.
-- The `shadcn build` command is used to build the registry.
-- The registry items are served as static files under `public/r/[name].json`.
-- The template also includes a route handler for serving registry items.
-- Every registry item are compatible with the `shadcn` CLI.
-- We have also added v0 integration using the `Open in v0` api.
+```bash
+pnpm install
+pnpm dev
+pnpm lint
+pnpm registry:build
+```
 
-## Documentation
+## Install From Registry
 
-Visit the [shadcn documentation](https://ui.shadcn.com/docs/registry) to view the full documentation.
+```bash
+pnpm dlx shadcn@latest add http://localhost:3000/r/inertia-pagination.json
+npx shadcn@latest add http://localhost:3000/r/inertia-pagination.json
+```
+
+## Usage
+
+```tsx
+import { Link } from "@inertiajs/react";
+import { InertiaPagination } from "@/components/inertia-pagination";
+
+<InertiaPagination links={links} LinkComponent={Link} />;
+```

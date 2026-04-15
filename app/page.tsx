@@ -1,70 +1,100 @@
-import * as React from "react"
-import { OpenInV0Button } from "@/components/open-in-v0-button"
-import { HelloWorld } from "@/registry/new-york/blocks/hello-world/hello-world"
-import { ExampleForm } from "@/registry/new-york/blocks/example-form/example-form"
-import PokemonPage from "@/registry/new-york/blocks/complex-component/page"
-import { ExampleCard } from "@/registry/new-york/blocks/example-with-css/example-card"
-// This page displays items from the custom registry.
-// You are free to implement this with your own design as needed.
+import * as React from "react";
+import { CodeBlock } from "@/components/code-block";
+import { InertiaPagination } from "@/components/inertia-pagination";
+import { InstallCommandTabs } from "@/components/install-command-tabs";
+
+const demoLinks = [
+  { active: false, label: "&laquo; Previous", url: "/users?page=2" },
+  { active: false, label: "1", url: "/users?page=1" },
+  { active: false, label: "2", url: "/users?page=2" },
+  { active: true, label: "3", url: "/users?page=3" },
+  { active: false, label: "4", url: "/users?page=4" },
+  { active: false, label: "...", url: null },
+  { active: false, label: "12", url: "/users?page=12" },
+  { active: false, label: "Next &raquo;", url: "/users?page=4" },
+];
+
+const installCommands = [
+  {
+    label: "PNPM",
+    value:
+      "pnpm dlx shadcn@latest add http://localhost:3000/r/inertia-pagination.json",
+  },
+  {
+    label: "NPM",
+    value:
+      "npx shadcn@latest add http://localhost:3000/r/inertia-pagination.json",
+  },
+];
+
+const usageCode = `import { Link } from "@inertiajs/react"
+import { InertiaPagination } from "@/components/inertia-pagination"
+
+<InertiaPagination links={links} LinkComponent={Link} />`;
 
 export default function Home() {
   return (
-    <div className="max-w-3xl mx-auto flex flex-col min-h-svh px-4 py-8 gap-8">
-      <header className="flex flex-col gap-1">
-        <h1 className="text-3xl font-bold tracking-tight">Custom Registry</h1>
-        <p className="text-muted-foreground">
-          A custom registry for distributing code using shadcn.
+    <div className="mx-auto flex min-h-svh w-full max-w-4xl flex-col gap-8 px-4 py-10">
+      <header className="flex flex-col gap-2">
+        <p className="text-sm font-medium text-muted-foreground">
+          shadcn registry
+        </p>
+        <h1 className="text-3xl font-bold tracking-tight">
+          Inertia Pagination
+        </h1>
+        <p className="max-w-2xl text-muted-foreground">
+          A compact paginator for Laravel and Inertia responses, designed to
+          drop into a shadcn-based UI.
         </p>
       </header>
-      <main className="flex flex-col flex-1 gap-8">
-        <div className="flex flex-col gap-4 border rounded-lg p-4 min-h-[450px] relative">
-          <div className="flex items-center justify-between">
-            <h2 className="text-sm text-muted-foreground sm:pl-3">
-              A simple hello world component
-            </h2>
-            <OpenInV0Button name="hello-world" className="w-fit" />
-          </div>
-          <div className="flex items-center justify-center min-h-[400px] relative">
-            <HelloWorld />
-          </div>
-        </div>
 
-        <div className="flex flex-col gap-4 border rounded-lg p-4 min-h-[450px] relative">
-          <div className="flex items-center justify-between">
-            <h2 className="text-sm text-muted-foreground sm:pl-3">
-              A contact form with Zod validation.
-            </h2>
-            <OpenInV0Button name="example-form" className="w-fit" />
+      <main className="flex flex-1 flex-col gap-8">
+        <section className="rounded-xl border bg-card p-6 shadow-sm">
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">Sample UI</h2>
+            <p className="max-w-2xl text-sm text-muted-foreground">
+              Renders previous and next controls, disables empty URLs, and
+              treats ellipsis entries as passive markers.
+            </p>
           </div>
-          <div className="flex items-center justify-center min-h-[500px] relative">
-            <ExampleForm />
-          </div>
-        </div>
 
-        <div className="flex flex-col gap-4 border rounded-lg p-4 min-h-[450px] relative">
-          <div className="flex items-center justify-between">
-            <h2 className="text-sm text-muted-foreground sm:pl-3">
-              A complex component showing hooks, libs and components.
-            </h2>
-            <OpenInV0Button name="complex-component" className="w-fit" />
+          <div className="mt-6 rounded-lg border border-dashed bg-muted/30 px-4 py-12">
+            <InertiaPagination links={demoLinks} size="default" />
           </div>
-          <div className="flex items-center justify-center min-h-[400px] relative">
-            <PokemonPage />
-          </div>
-        </div>
+        </section>
 
-        <div className="flex flex-col gap-4 border rounded-lg p-4 min-h-[450px] relative">
-          <div className="flex items-center justify-between">
-            <h2 className="text-sm text-muted-foreground sm:pl-3">
-              A login form with a CSS file.
-            </h2>
-            <OpenInV0Button name="example-with-css" className="w-fit" />
+        <section className="rounded-xl border bg-card p-6 shadow-sm">
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">Installation</h2>
+            <p className="max-w-2xl text-sm text-muted-foreground">
+              Add the component from this registry with your preferred package
+              manager.
+            </p>
           </div>
-          <div className="flex items-center justify-center min-h-[400px] relative">
-            <ExampleCard />
+
+          <div className="mt-6">
+            <InstallCommandTabs
+              commands={installCommands}
+              defaultValue="PNPM"
+            />
           </div>
-        </div>
+        </section>
+
+        <section className="rounded-xl border bg-card p-6 shadow-sm">
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">Usage</h2>
+            <p className="max-w-2xl text-sm text-muted-foreground">
+              Pass the backend paginator `links` array directly. In an Inertia
+              app, supply `LinkComponent=Link` so navigation keeps client-side
+              state and scroll behavior.
+            </p>
+          </div>
+
+          <div className="mt-6">
+            <CodeBlock code={usageCode} language="tsx" />
+          </div>
+        </section>
       </main>
     </div>
-  )
+  );
 }
