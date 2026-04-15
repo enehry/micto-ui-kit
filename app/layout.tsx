@@ -13,8 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Inertia Pagination Registry",
-  description: "A focused shadcn registry for the InertiaPagination component",
+  title: "MICTO UI KIT",
+  description:
+    "A collection of UI components and utilities for building modern web applications with shadcn/ui.",
 };
 
 export default function RootLayout({
