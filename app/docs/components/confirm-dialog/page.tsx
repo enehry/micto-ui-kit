@@ -89,11 +89,23 @@ const propsData = [
     description: "Text for the primary action button.",
   },
   {
+    name: "cancelText",
+    type: "string",
+    default: "'Cancel'",
+    description: "Text for the secondary/dismiss action button.",
+  },
+  {
     name: "onConfirm",
     type: "() => Promise<boolean | void> | boolean | void",
     default: "undefined",
     description:
       "Optional async handler called when confirming. Returning false prevents closing.",
+  },
+  {
+    name: "onCancel",
+    type: "() => void",
+    default: "undefined",
+    description: "Optional callback called when the dialog is dismissed or cancelled.",
   },
   {
     name: "size",
