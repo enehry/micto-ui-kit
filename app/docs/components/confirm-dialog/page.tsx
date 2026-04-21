@@ -1,10 +1,6 @@
-"use client";
-
 import * as React from "react";
-import { ChevronRight, Layers, Terminal } from "lucide-react";
 import { CodeBlock } from "@/components/code-block";
 import { InstallCommandTabs } from "@/components/install-command-tabs";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
   Table,
@@ -15,18 +11,23 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Separator } from "@/components/ui/separator";
-import { confirm } from "@/components/ui/confirm";
 import { ComponentPreview } from "@/components/component-preview";
+import { getCode, highlightCode } from "@/lib/get-code";
+import { DocsHeader } from "@/components/docs-header";
+import { DocsSectionHeading } from "@/components/docs-section-heading";
+import ConfirmDemo from "@/registry/new-york/example/confirm-demo";
 import Link from "next/link";
 
 const installCommands = [
   {
     label: "pnpm",
-    value: "pnpm dlx shadcn@latest add https://micto-ui-kit.misangono.net/r/confirm.json",
+    value:
+      "pnpm dlx shadcn@latest add https://micto-ui-kit.misangono.net/r/confirm.json",
   },
   {
     label: "npm",
-    value: "npx shadcn@latest add https://micto-ui-kit.misangono.net/r/confirm.json",
+    value:
+      "npx shadcn@latest add https://micto-ui-kit.misangono.net/r/confirm.json",
   },
 ];
 
@@ -47,6 +48,19 @@ export function DeleteButton() {
   }
 
   return <Button onClick={handleDelete}>Delete</Button>
+}`;
+
+const setupCode = `import { ConfirmProvider } from "@/components/ui/confirm"
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body>
+        {children}
+        <ConfirmProvider />
+      </body>
+    </html>
+  )
 }`;
 
 const propsData = [
@@ -78,7 +92,8 @@ const propsData = [
     name: "onConfirm",
     type: "() => Promise<boolean | void> | boolean | void",
     default: "undefined",
-    description: "Optional async handler called when confirming. Returning false prevents closing.",
+    description:
+      "Optional async handler called when confirming. Returning false prevents closing.",
   },
   {
     name: "size",
@@ -90,7 +105,8 @@ const propsData = [
     name: "className",
     type: "string",
     default: "undefined",
-    description: "Tailwind classes to override the dialog styling (e.g. width, text-alignment).",
+    description:
+      "Tailwind classes to override the dialog styling (e.g. width, text-alignment).",
   },
   {
     name: "dismissable",
@@ -115,207 +131,123 @@ const providerProps = [
   },
 ];
 
-const demoCode = `// 1. Simple Alert
-confirm({
-  title: "Account Update",
-  body: "Your profile has been saved successfully.",
-  icon: "info",
-  confirmText: "Great",
-});
+export default async function ConfirmDialogPage() {
+  const demoRawCode = getCode("registry/new-york/example/confirm-demo.tsx");
+  const demoHtml = await highlightCode(demoRawCode);
+  const setupHtml = await highlightCode(setupCode);
+  const usageHtml = await highlightCode(basicUsage);
 
-// 2. Trigger Stack
-confirm({ title: "First Alert", ... });
-confirm({ title: "Second Alert", ... });
-confirm({ title: "Danger Zone", ... });
-
-// 3. Async Lifecycle
-confirm({
-  title: "Syncing Data",
-  body: "This will start a background sync...",
-  onConfirm: async () => {
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    return true;
-  },
-});`;
-
-export default function ConfirmDialogPage() {
-  const triggerSimple = () => {
-    confirm({
-      title: "Account Update",
-      body: "Your profile has been saved successfully.",
-      icon: "info",
-      confirmText: "Great",
-    });
-  };
-
-  const triggerStack = () => {
-    confirm({
-      title: "First Alert",
-      body: "This is the first layer of the stack.",
-      icon: "info",
-    });
-    setTimeout(() => {
-      confirm({
-        title: "Second Alert",
-        body: "Look! I pushed the previous one back.",
-        icon: "warning",
-      });
-    }, 200);
-    setTimeout(() => {
-      confirm({
-        title: "Danger Zone",
-        body: "Now we have a complete stack of confirmations.",
-        icon: "danger",
-        confirmText: "I understand",
-      });
-    }, 400);
-  };
-
-  const triggerAsync = () => {
-    confirm({
-      title: "Syncing Data",
-      body: "This will start a background sync that takes about 2 seconds.",
-      onConfirm: async () => {
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        return true;
-      },
-    });
-  };
+  const headerBadges = (
+    <>
+      <Badge
+        variant="secondary"
+        className="rounded-md px-2 py-0.5 text-[11px] uppercase tracking-wider"
+      >
+        Singleton
+      </Badge>
+      <Badge
+        variant="outline"
+        className="rounded-md px-2 py-0.5 text-[11px] uppercase tracking-wider border-primary/20 bg-primary/5 text-primary font-medium"
+      >
+        Promise-Based
+      </Badge>
+    </>
+  );
 
   return (
-    <div className="mx-auto max-w-4xl space-y-12 pb-20">
-      {/* Header Section */}
-      <div className="space-y-4">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <span>Components</span>
-          <ChevronRight className="size-3" />
-          <span className="text-foreground font-medium">Global Confirm</span>
-        </div>
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div className="space-y-2">
-            <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl text-foreground">
-              Global Confirm
-            </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl">
-              A singleton, promise-based confirmation system inspired by Sonner. Handles multiple stacked dialogs with ease.
-            </p>
-          </div>
-          <div className="flex gap-2 shrink-0">
-            <Badge variant="secondary" className="rounded-md px-2 py-0.5 text-[11px] uppercase tracking-wider">Singleton</Badge>
-            <Badge variant="outline" className="rounded-md px-2 py-0.5 text-[11px] uppercase tracking-wider border-primary/20 bg-primary/5 text-primary">Promise-Based</Badge>
-          </div>
-        </div>
-      </div>
-
-      <Separator />
+    <div className="mx-auto max-w-4xl space-y-12 pb-20 mt-8">
+      <DocsHeader
+        title="Global Confirm"
+        description="A singleton, promise-based confirmation system inspired by Sonner. Handles multiple stacked dialogs with ease."
+        badges={headerBadges}
+      />
 
       {/* Preview Section */}
       <section className="space-y-6">
-        <div className="space-y-2">
-          <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
-            <Layers className="size-5 text-primary" />
-            Interactive Demo
-          </h2>
-          <p className="text-muted-foreground">
-            Test the functional API. Notice how dialogs stack and scale when triggered simultaneously.
-          </p>
-        </div>
-        
-        <ComponentPreview code={demoCode}>
-           <div className="flex flex-wrap gap-4 justify-center">
-             <Button onClick={triggerSimple} variant="outline" className="h-11 px-6 shadow-sm">
-               Simple Alert
-             </Button>
-             <Button onClick={triggerStack} variant="secondary" className="h-11 px-6 shadow-sm">
-               Trigger Stack (3)
-             </Button>
-             <Button onClick={triggerAsync} className="h-11 px-6 shadow-md shadow-primary/20">
-               Async Lifecycle
-             </Button>
-           </div>
+        <DocsSectionHeading
+          title="Interactive Demo"
+          description="Test the functional API. Notice how dialogs stack and scale when triggered simultaneously."
+        />
+        <ComponentPreview code={demoRawCode} html={demoHtml}>
+          <ConfirmDemo />
         </ComponentPreview>
       </section>
 
       {/* Installation Section */}
       <section className="space-y-6">
-        <div className="flex items-center gap-3">
-          <div className="flex size-8 items-center justify-center rounded-lg bg-primary/10 text-primary font-bold">
-            <Terminal className="size-4" />
-          </div>
-          <h2 className="text-2xl font-bold tracking-tight text-foreground">Installation</h2>
-        </div>
+        <DocsSectionHeading title="Installation" />
         <div className="rounded-xl border bg-muted/40 p-1">
-          <InstallCommandTabs
-            commands={installCommands}
-            defaultValue="pnpm"
-          />
+          <InstallCommandTabs commands={installCommands} defaultValue="pnpm" />
         </div>
       </section>
 
       {/* Setup Section */}
       <section className="space-y-6">
-        <h2 className="text-2xl font-bold tracking-tight text-foreground">Setup</h2>
-        <p className="text-muted-foreground">
-          Add the `ConfirmProvider` to your root layout or app component. This ensures the confirmation stack is available globally.
-        </p>
+        <DocsSectionHeading
+          title="Setup"
+          description="Add the ConfirmProvider to your root layout or app component. This ensures the confirmation stack is available globally."
+        />
         <div className="overflow-hidden rounded-xl border">
-          <CodeBlock 
-            code={`import { ConfirmProvider } from "@/components/ui/confirm"
-
-export default function RootLayout({ children }) {
-  return (
-    <html lang="en">
-      <body>
-        {children}
-        <ConfirmProvider />
-      </body>
-    </html>
-  )
-}`} 
-            language="tsx" 
-          />
+          <CodeBlock code={setupCode} html={setupHtml} language="tsx" />
         </div>
       </section>
 
       {/* Usage Section */}
       <section className="space-y-6">
-        <h2 className="text-2xl font-bold tracking-tight text-foreground">Functional API Usage</h2>
-        <p className="text-muted-foreground">
-          Import `confirm` and await the result. No component wrapping or local state required per call.
-        </p>
+        <DocsSectionHeading
+          title="Functional API Usage"
+          description="Import confirm and await the result. No component wrapping or local state required per call."
+        />
         <div className="overflow-hidden rounded-xl border">
-          <CodeBlock code={basicUsage} language="tsx" />
+          <CodeBlock code={basicUsage} html={usageHtml} language="tsx" />
         </div>
       </section>
 
       {/* API Reference */}
       <section className="space-y-6 text-foreground">
-        <div className="space-y-2">
-          <h2 className="text-2xl font-bold tracking-tight">API Reference</h2>
-          <p className="text-muted-foreground">
-            Options passed to the lifecycle functions.
-          </p>
-        </div>
+        <DocsSectionHeading
+          title="API Reference"
+          description="Options passed to the lifecycle functions."
+        />
 
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold italic opacity-80">confirm(options)</h3>
-          <div className="rounded-xl border overflow-hidden">
+        <div className="space-y-4 font-sans text-muted-foreground">
+          <h3 className="text-lg font-semibold text-foreground/80">
+            confirm(options)
+          </h3>
+          <div className="rounded-xl border overflow-hidden shadow-sm bg-background">
             <Table>
               <TableHeader>
                 <TableRow className="bg-muted/50 hover:bg-muted/50">
-                  <TableHead className="w-[150px]">Prop</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Default</TableHead>
-                  <TableHead className="text-right">Description</TableHead>
+                  <TableHead className="w-[150px] font-bold text-foreground/80 lowercase tracking-tight">
+                    Prop
+                  </TableHead>
+                  <TableHead className="font-bold text-foreground/80 lowercase tracking-tight">
+                    Type
+                  </TableHead>
+                  <TableHead className="font-bold text-foreground/80 lowercase tracking-tight">
+                    Default
+                  </TableHead>
+                  <TableHead className="text-right font-bold text-foreground/80 lowercase tracking-tight">
+                    Description
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {propsData.map((prop) => (
-                  <TableRow key={prop.name} className="border-b transition-colors hover:bg-muted/5 font-sans">
-                    <TableCell className="font-mono text-xs font-semibold">{prop.name}</TableCell>
-                    <TableCell className="font-mono text-xs text-blue-600 dark:text-blue-400">{prop.type}</TableCell>
-                    <TableCell className="font-mono text-xs text-muted-foreground">{prop.default}</TableCell>
-                    <TableCell className="text-right text-xs leading-relaxed max-w-[300px]">
+                  <TableRow
+                    key={prop.name}
+                    className="border-b transition-colors hover:bg-muted/5"
+                  >
+                    <TableCell className="font-mono text-xs font-semibold text-primary/80">
+                      {prop.name}
+                    </TableCell>
+                    <TableCell className="font-mono text-xs text-blue-600 dark:text-blue-400">
+                      {prop.type}
+                    </TableCell>
+                    <TableCell className="font-mono text-xs text-muted-foreground/70">
+                      {prop.default}
+                    </TableCell>
+                    <TableCell className="text-right text-xs leading-relaxed max-w-[300px] text-muted-foreground">
                       {prop.description}
                     </TableCell>
                   </TableRow>
@@ -325,25 +257,44 @@ export default function RootLayout({ children }) {
           </div>
         </div>
 
-        <div className="space-y-4 pt-4">
-          <h3 className="text-lg font-semibold italic opacity-80">ConfirmProvider</h3>
-          <div className="rounded-xl border overflow-hidden">
+        <div className="space-y-4 pt-4 font-sans text-muted-foreground">
+          <h3 className="text-lg font-semibold text-foreground/80">
+            ConfirmProvider
+          </h3>
+          <div className="rounded-xl border overflow-hidden shadow-sm bg-background">
             <Table>
               <TableHeader>
                 <TableRow className="bg-muted/50 hover:bg-muted/50">
-                  <TableHead className="w-[150px]">Prop</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Default</TableHead>
-                  <TableHead className="text-right">Description</TableHead>
+                  <TableHead className="w-[150px] font-bold text-foreground/80 lowercase tracking-tight">
+                    Prop
+                  </TableHead>
+                  <TableHead className="font-bold text-foreground/80 lowercase tracking-tight">
+                    Type
+                  </TableHead>
+                  <TableHead className="font-bold text-foreground/80 lowercase tracking-tight">
+                    Default
+                  </TableHead>
+                  <TableHead className="text-right font-bold text-foreground/80 lowercase tracking-tight">
+                    Description
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {providerProps.map((prop) => (
-                  <TableRow key={prop.name} className="border-b transition-colors hover:bg-muted/5 font-sans">
-                    <TableCell className="font-mono text-xs font-semibold">{prop.name}</TableCell>
-                    <TableCell className="font-mono text-xs text-blue-600 dark:text-blue-400">{prop.type}</TableCell>
-                    <TableCell className="font-mono text-xs text-muted-foreground">{prop.default}</TableCell>
-                    <TableCell className="text-right text-xs leading-relaxed max-w-[300px]">
+                  <TableRow
+                    key={prop.name}
+                    className="border-b transition-colors hover:bg-muted/5"
+                  >
+                    <TableCell className="font-mono text-xs font-semibold text-primary/80">
+                      {prop.name}
+                    </TableCell>
+                    <TableCell className="font-mono text-xs text-blue-600 dark:text-blue-400">
+                      {prop.type}
+                    </TableCell>
+                    <TableCell className="font-mono text-xs text-muted-foreground/70">
+                      {prop.default}
+                    </TableCell>
+                    <TableCell className="text-right text-xs leading-relaxed max-w-[300px] text-muted-foreground">
                       {prop.description}
                     </TableCell>
                   </TableRow>
@@ -353,19 +304,6 @@ export default function RootLayout({ children }) {
           </div>
         </div>
       </section>
-
-      {/* Footer Navigation */}
-      <Separator />
-      <div className="flex items-center justify-between pt-4 pb-12">
-        <Link href="/docs/components/inertia-pagination" className="group flex flex-col gap-1 transition-colors hover:text-primary">
-          <span className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold group-hover:text-primary/50">Previous</span>
-          <span className="text-sm font-medium">Inertia Pagination</span>
-        </Link>
-        <Link href="/docs/components/button" className="group flex flex-col items-end gap-1 transition-colors hover:text-primary text-right">
-          <span className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold group-hover:text-primary/50">Next</span>
-          <span className="text-sm font-medium">Button Component</span>
-        </Link>
-      </div>
     </div>
   );
 }

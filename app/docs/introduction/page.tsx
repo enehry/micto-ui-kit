@@ -1,14 +1,14 @@
 import * as React from "react"
+import { DocsHeader } from "@/components/docs-header"
 
 export default function IntroductionPage() {
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">Introduction</h1>
-        <p className="text-lg text-muted-foreground">
-          Welcome to the MICTO UI KIT. A collection of reusable components built for the Municipal ICT Office of Angono.
-        </p>
-      </div>
+      <DocsHeader
+        title="Introduction"
+        description="Welcome to the MICTO UI KIT. A collection of reusable components built for the Municipal ICT Office of Angono."
+        category="Getting Started"
+      />
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <div className="rounded-xl border bg-card p-6 shadow-sm">
           <h3 className="font-semibold">Modern & Accessible</h3>

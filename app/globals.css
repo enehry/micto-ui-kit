@@ -128,3 +128,21 @@
     @apply font-sans;
   }
 }
+
+@layer utilities {
+  .glass {
+    @apply bg-background/40 backdrop-blur-md border border-border/50 shadow-xl;
+  }
+
+  .glow {
+    @apply relative after:absolute after:inset-0 after:-z-10 after:bg-primary/20 after:blur-3xl after:content-[''];
+  }
+  
+  .mesh-gradient {
+    background-image: 
+      radial-gradient(at 0% 0%, oklch(0.505 0.213 27.518 / 0.15) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, oklch(0.444 0.177 26.899 / 0.1) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, oklch(0.505 0.213 27.518 / 0.05) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, oklch(0.444 0.177 26.899 / 0.1) 0px, transparent 50%);
+  }
+}

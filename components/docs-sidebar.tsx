@@ -21,14 +21,14 @@ export const navData = [
   {
     title: "React",
     items: [
-      {
-        title: "Button",
-        url: "/docs/components/button",
-      },
-      {
-        title: "Pagination",
-        url: "/docs/components/pagination",
-      },
+      // {
+      //   title: "Button",
+      //   url: "/docs/components/button",
+      // },
+      // {
+      //   title: "Pagination",
+      //   url: "/docs/components/pagination",
+      // },
       {
         title: "Confirm Dialog",
         url: "/docs/components/confirm-dialog",
@@ -68,7 +68,7 @@ export function DocsSidebar() {
                       "flex h-8 items-center px-3 text-[13px] font-medium transition-colors hover:text-foreground rounded-md",
                       isActive
                         ? "bg-muted font-semibold text-foreground"
-                        : "text-muted-foreground/70 hover:bg-muted/50"
+                        : "text-muted-foreground/70 hover:bg-muted/50",
                     )}
                   >
                     {item.title}

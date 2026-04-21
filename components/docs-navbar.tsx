@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Command, Search, Menu } from "lucide-react";
+import { Command, Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -15,6 +14,9 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { navData } from "./docs-sidebar";
+import { DocsSearch } from "./docs-search";
+import { ModeToggle } from "./mode-toggle";
+import { Github } from "lucide-react";
 
 export function DocsNavbar() {
   const pathname = usePathname();
@@ -27,24 +29,30 @@ export function DocsNavbar() {
             <div className="flex aspect-square size-6 items-center justify-center rounded-[4px] bg-primary text-primary-foreground">
               <Command className="size-3.5" />
             </div>
-            <span className="font-bold tracking-tight text-sm">MICTO UI</span>
+            <div className="flex flex-col leading-none">
+              <span className="text-sm font-bold tracking-tight">MICTO</span>
+              <span className="text-[9px] font-medium text-muted-foreground uppercase tracking-widest leading-none">UI KIT</span>
+            </div>
           </Link>
         </div>
 
         <div className="flex flex-1 items-center justify-between gap-4 md:justify-end">
           <div className="w-full flex-1 md:w-auto md:flex-none">
-            <div className="relative max-w-sm">
-              <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground/30" />
-              <Input
-                placeholder="Search documentation..."
-                className="h-9 w-full pl-9 md:w-[300px] lg:w-[400px] border-none bg-muted/20 focus-visible:bg-muted/40 focus-visible:ring-0"
-              />
-              <div className="absolute right-3 top-1/2 hidden -translate-y-1/2 gap-1 md:flex">
-                <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
-                  <span className="text-xs">⌘</span>K
-                </kbd>
-              </div>
-            </div>
+            <DocsSearch />
+          </div>
+          
+          <div className="flex items-center gap-1">
+            <Button variant="ghost" size="icon" asChild className="size-9 h-9 w-9">
+              <Link
+                href="https://github.com/Municipal-ICT-Office-Angono/micto-ui-kit"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Github className="size-4" />
+                <span className="sr-only">GitHub</span>
+              </Link>
+            </Button>
+            <ModeToggle />
           </div>
 
           <Sheet>
@@ -60,7 +68,10 @@ export function DocsNavbar() {
                   <div className="flex aspect-square size-6 items-center justify-center rounded-[4px] bg-primary text-primary-foreground">
                     <Command className="size-3.5" />
                   </div>
-                  MICTO UI
+                  <div className="flex flex-col leading-none">
+                    <span className="text-sm font-bold tracking-tight text-left">MICTO</span>
+                    <span className="text-[9px] font-medium text-muted-foreground uppercase tracking-widest leading-none text-left">UI KIT</span>
+                  </div>
                 </SheetTitle>
                 <SheetDescription className="sr-only">
                   Navigation menu for mobile devices.

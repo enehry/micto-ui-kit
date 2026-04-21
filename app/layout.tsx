@@ -4,7 +4,6 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { DocsNavbar } from "@/components/docs-navbar";
-import { DocsSidebar } from "@/components/docs-sidebar";
 import { ConfirmProvider } from "@/components/ui/confirm";
 
 const geistSans = Geist({
@@ -33,6 +32,9 @@ export const metadata: Metadata = {
     "A collection of UI components and utilities for building modern web applications with shadcn/ui.",
 };
 
+import { ThemeProvider } from "@/components/theme-provider";
+
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -41,6 +43,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={cn(
         "font-sans antialiased",
         geistSans.variable,
@@ -50,18 +53,20 @@ export default function RootLayout({
       )}
     >
       <body className="min-h-screen bg-background text-foreground tracking-tight">
-        <TooltipProvider>
-          <ConfirmProvider />
-          <div className="relative flex min-h-screen flex-col">
-            <DocsNavbar />
-            <div className="flex-1 items-start md:grid md:grid-cols-[260px_minmax(0,1fr)] lg:grid-cols-[280px_minmax(0,1fr)]">
-              <DocsSidebar />
-              <main className="py-10 px-6 md:px-10 lg:px-20 min-h-[calc(100vh-4rem)]">
-                {children}
-              </main>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <TooltipProvider>
+            <ConfirmProvider />
+            <div className="relative flex min-h-screen flex-col">
+              <DocsNavbar />
+              <div className="flex-1">{children}</div>
             </div>
-          </div>
-        </TooltipProvider>
+          </TooltipProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

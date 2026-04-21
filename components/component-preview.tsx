@@ -9,12 +9,14 @@ import { cn } from "@/lib/utils"
 interface ComponentPreviewProps {
   children: React.ReactNode
   code: string
+  html?: string
   className?: string
 }
 
 export function ComponentPreview({
   children,
   code,
+  html,
   className,
 }: ComponentPreviewProps) {
   return (
@@ -51,6 +53,7 @@ export function ComponentPreview({
         <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
           <CodeBlock 
             code={code} 
+            html={html}
             language="tsx" 
             className="rounded-xl border shadow-sm" 
           />
